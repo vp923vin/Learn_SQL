@@ -104,16 +104,16 @@
     TASK:
     find the lowest and highest sales for each product
 
-    SELECT 
-        OrderID, 
-        ProductID, 
-        Sales,
-        FIRST_VALUE(Sales) over(PARTITION BY ProductID ORDER BY Sales) lowest_sales,
-        LAST_VALUE(Sales) over(PARTITION BY ProductID ORDER BY Sales ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) highest_sales,
-        FIRST_VALUE(Sales) over(PARTITION BY ProductID ORDER BY Sales desc) highestSales,
-        MIN(Sales) over(PARTITION BY ProductID) lowSales,
-        MAX(Sales) over(PARTITION BY ProductID) higeSales
-    FROM orders;
+        SELECT 
+            OrderID, 
+            ProductID, 
+            Sales,
+            FIRST_VALUE(Sales) over(PARTITION BY ProductID ORDER BY Sales) lowest_sales,
+            LAST_VALUE(Sales) over(PARTITION BY ProductID ORDER BY Sales ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) highest_sales,
+            FIRST_VALUE(Sales) over(PARTITION BY ProductID ORDER BY Sales desc) highestSales,
+            MIN(Sales) over(PARTITION BY ProductID) lowSales,
+            MAX(Sales) over(PARTITION BY ProductID) higeSales
+        FROM orders;
 
 
 
@@ -123,11 +123,11 @@
     TASK: 
     find the difference in sales between the current and the lowest sales
 
-    SELECT 
-        OrderID, 
-        ProductID, 
-        Sales,
-        FIRST_VALUE(Sales) over(PARTITION BY ProductID ORDER BY Sales) lowest_sales,
-        LAST_VALUE(Sales) over(PARTITION BY ProductID ORDER BY Sales ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) highest_sales,
-        Sales - FIRST_VALUE(Sales) over(PARTITION BY ProductID ORDER BY Sales) SalesDifference
-    FROM orders;
+        SELECT 
+            OrderID, 
+            ProductID, 
+            Sales,
+            FIRST_VALUE(Sales) over(PARTITION BY ProductID ORDER BY Sales) lowest_sales,
+            LAST_VALUE(Sales) over(PARTITION BY ProductID ORDER BY Sales ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) highest_sales,
+            Sales - FIRST_VALUE(Sales) over(PARTITION BY ProductID ORDER BY Sales) SalesDifference
+        FROM orders;
