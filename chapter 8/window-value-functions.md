@@ -59,22 +59,22 @@
 - TASK:
   Analyze customer loyalty by ranking customers based on the average number of days between orders 
 
-    SELECT 
-        CustomerID,
-        AVG(DaysUntilNextOrder) AvgDays,
-        RANK() OVER(ORDER BY COALESCE(AVG(DaysUntilNextOrder), 99999)) rankAvgDays
-    FROM 
-        (
-            SELECT 
-                OrderID,
-                CustomerID,
-                OrderDate currentOrder,
-                LEAD(OrderDate) OVER(PARTITION BY CustomerID ORDER BY OrderDate) NextOrder,
-                DATEDIFF(lead(OrderDate) OVER(PARTITION BY CustomerID ORDER BY OrderDate), OrderDate) DaysUntilNextOrder
-            FROM orders 
-            ORDER BY CustomerID, OrderDate
-        )t 
-    GROUP BY CustomerID;
+        SELECT 
+            CustomerID,
+            AVG(DaysUntilNextOrder) AvgDays,
+            RANK() OVER(ORDER BY COALESCE(AVG(DaysUntilNextOrder), 99999)) rankAvgDays
+        FROM 
+            (
+                SELECT 
+                    OrderID,
+                    CustomerID,
+                    OrderDate currentOrder,
+                    LEAD(OrderDate) OVER(PARTITION BY CustomerID ORDER BY OrderDate) NextOrder,
+                    DATEDIFF(lead(OrderDate) OVER(PARTITION BY CustomerID ORDER BY OrderDate), OrderDate) DaysUntilNextOrder
+                FROM orders 
+                ORDER BY CustomerID, OrderDate
+            )t 
+        GROUP BY CustomerID;
 
 
 ##### Comparision analysis: 
@@ -104,16 +104,16 @@
 - TASK:
   find the lowest and highest sales for each product
 
-    SELECT 
-        OrderID, 
-        ProductID, 
-        Sales,
-        FIRST_VALUE(Sales) over(PARTITION BY ProductID ORDER BY Sales) lowest_sales,
-        LAST_VALUE(Sales) over(PARTITION BY ProductID ORDER BY Sales ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) highest_sales,
-        FIRST_VALUE(Sales) over(PARTITION BY ProductID ORDER BY Sales desc) highestSales,
-        MIN(Sales) over(PARTITION BY ProductID) lowSales,
-        MAX(Sales) over(PARTITION BY ProductID) higeSales
-    FROM orders;
+        SELECT 
+            OrderID, 
+            ProductID, 
+            Sales,
+            FIRST_VALUE(Sales) over(PARTITION BY ProductID ORDER BY Sales) lowest_sales,
+            LAST_VALUE(Sales) over(PARTITION BY ProductID ORDER BY Sales ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) highest_sales,
+            FIRST_VALUE(Sales) over(PARTITION BY ProductID ORDER BY Sales desc) highestSales,
+            MIN(Sales) over(PARTITION BY ProductID) lowSales,
+            MAX(Sales) over(PARTITION BY ProductID) higeSales
+        FROM orders;
 
 
 
