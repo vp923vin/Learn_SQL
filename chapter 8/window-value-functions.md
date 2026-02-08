@@ -3,23 +3,22 @@
 - access a value from next row within a window
 
 - LEAD(EXPRESSION (Sales) , OFFSET (2), DEFAULT VALUE (10)) over (PARTITION BY productID ORDER BY orderDate)
-
-- EXPRESSION is required (any data type )
-- OFFSET is optional number of rows forward from the current row default = 1
-- DEFAULT VALUE is optional return default value if next row is not available Default = NULL
-- PARTITION BY is optional 
-- ORDER BY is required
+    - EXPRESSION is required (any data type )
+    - OFFSET is optional number of rows forward from the current row default = 1
+    - DEFAULT VALUE is optional return default value if next row is not available Default = NULL
+    - PARTITION BY is optional 
+    - ORDER BY is required
 
 
 ### lag function
 - access a value fom previous row within a window
 
 - LAG(EXPRESSION (Sales) , OFFSET (2), DEFAULT VALUE (10)) over (PARTITION BY productID ORDER BY orderDate)
-- EXPRESSION is required (any data type )
-- OFFSET is optional number of rows backward from the current row default = 1
-- DEFAULT VALUE is optional return default value if previous row is not available Default = NULL
-- PARTITION BY is optional 
-- ORDER BY is required
+    - EXPRESSION is required (any data type )
+    - OFFSET is optional number of rows backward from the current row default = 1
+    - DEFAULT VALUE is optional return default value if previous row is not available Default = NULL
+    - PARTITION BY is optional 
+    - ORDER BY is required
 
 
 #### USE CASES: 
@@ -83,8 +82,8 @@
   access a value from the first row within a window 
 
 - syntax: 
-  FIRST_VALUE(Sales) OVER(ORDER BY Month RANGE BETWEEN UNBOUND PRECEDING AND CURRENT ROW)
-  DEFAULT  => RANGE BETWEEN UNBOUND PRECEDING AND CURRENT ROW
+  - FIRST_VALUE(Sales) OVER(ORDER BY Month RANGE BETWEEN UNBOUND PRECEDING AND CURRENT ROW)
+  - DEFAULT  => RANGE BETWEEN UNBOUND PRECEDING AND CURRENT ROW
 
 
 ### last value
@@ -93,13 +92,13 @@
 
 
 - syntax: 
-  LAST_VALUE(Sales) OVER(ORDER BY Month RANGE BETWEEN UNBOUND PRECEDING AND CURRENT ROW)
-  DEFAULT  => RANGE BETWEEN UNBOUND PRECEDING AND CURRENT ROW
+  - LAST_VALUE(Sales) OVER(ORDER BY Month RANGE BETWEEN UNBOUND PRECEDING AND CURRENT ROW)
+  - DEFAULT  => RANGE BETWEEN UNBOUND PRECEDING AND CURRENT ROW
 
 - Note
-  In last value default not able to achieve the last value from the window so need to change 
+  - In last value default not able to achieve the last value from the window so need to change 
 
-  LAST_VALUE(Sales) OVER(ORDER BY Month ROWS BETWEEN CURRENT ROW AND UNBOUND FOLLOWING)
+  - LAST_VALUE(Sales) OVER(ORDER BY Month ROWS BETWEEN CURRENT ROW AND UNBOUND FOLLOWING)
 
 - TASK:
   find the lowest and highest sales for each product
