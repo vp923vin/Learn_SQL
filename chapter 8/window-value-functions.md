@@ -81,32 +81,53 @@
 
 ##### Comparision analysis: 
 ### first value 
-FIRST_VALUE()
-access a value from the first row within a window 
+    FIRST_VALUE()
+    access a value from the first row within a window 
 
-syntax: 
-FIRST_VALUE(Sales) OVER(ORDER BY Month RANGE BETWEEN UNBOUND PRECEDING AND CURRENT ROW)
+    syntax: 
+    FIRST_VALUE(Sales) OVER(ORDER BY Month RANGE BETWEEN UNBOUND PRECEDING AND CURRENT ROW)
 
-DEFAULT  => RANGE BETWEEN UNBOUND PRECEDING AND CURRENT ROW
+    DEFAULT  => RANGE BETWEEN UNBOUND PRECEDING AND CURRENT ROW
 ### last value
-LAST_VALUE()
-access a value from the last row within a window
+    LAST_VALUE()
+    access a value from the last row within a window
 
 
-syntax: 
-LAST_VALUE(Sales) OVER(ORDER BY Month RANGE BETWEEN UNBOUND PRECEDING AND CURRENT ROW)
-DEFAULT  => RANGE BETWEEN UNBOUND PRECEDING AND CURRENT ROW
+    syntax: 
+    LAST_VALUE(Sales) OVER(ORDER BY Month RANGE BETWEEN UNBOUND PRECEDING AND CURRENT ROW)
+    DEFAULT  => RANGE BETWEEN UNBOUND PRECEDING AND CURRENT ROW
 
-In last value default not able to achieve the last value from the window so need to change 
+    In last value default not able to achieve the last value from the window so need to change 
 
-LAST_VALUE(Sales) OVER(ORDER BY Month ROWS BETWEEN CURRENT ROW AND UNBOUND FOLLOWING)
+    LAST_VALUE(Sales) OVER(ORDER BY Month ROWS BETWEEN CURRENT ROW AND UNBOUND FOLLOWING)
 
-TASK:
-find the lowest and highest sales for each product
+    TASK:
+    find the lowest and highest sales for each product
+
+    SELECT 
+        OrderID, 
+        ProductID, 
+        Sales,
+        FIRST_VALUE(Sales) over(PARTITION BY ProductID ORDER BY Sales) lowest_sales,
+        LAST_VALUE(Sales) over(PARTITION BY ProductID ORDER BY Sales ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) highest_sales,
+        FIRST_VALUE(Sales) over(PARTITION BY ProductID ORDER BY Sales desc) highestSales,
+        MIN(Sales) over(PARTITION BY ProductID) lowSales,
+        MAX(Sales) over(PARTITION BY ProductID) higeSales
+    FROM orders;
 
 
 
 
 
-TASK: 
-find the difference in sales between the current and the lowest sales
+
+    TASK: 
+    find the difference in sales between the current and the lowest sales
+
+    SELECT 
+        OrderID, 
+        ProductID, 
+        Sales,
+        FIRST_VALUE(Sales) over(PARTITION BY ProductID ORDER BY Sales) lowest_sales,
+        LAST_VALUE(Sales) over(PARTITION BY ProductID ORDER BY Sales ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) highest_sales,
+        Sales - FIRST_VALUE(Sales) over(PARTITION BY ProductID ORDER BY Sales) SalesDifference
+    FROM orders;
