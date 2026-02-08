@@ -37,19 +37,19 @@
 - TASK:
   ANALYZE the month-over-month (MoM) performance by finding the percentage change in sales between the current and previous month  
 
-    SELECT   
-        *,
-        CurrentMonthSales - PreviousMonthSales as MoM_change,
-        ROUND((CurrentMonthSales - PreviousMonthSales)/PreviousMonthSales * 100, 1) MoM_percentChange
-    FROM
-        (
-            SELECT 
-                MONTH(OrderDate) as OrderMonth,
-                Sum(Sales) as CurrentMonthSales,
-                lag(SUM(Sales)) OVER(ORDER BY MONTH(OrderDate)) PreviousMonthSales
-            FROM orders
-            GROUP BY month(OrderDate)
-        )t;
+        SELECT   
+            *,
+            CurrentMonthSales - PreviousMonthSales as MoM_change,
+            ROUND((CurrentMonthSales - PreviousMonthSales)/PreviousMonthSales * 100, 1) MoM_percentChange
+        FROM
+            (
+                SELECT 
+                    MONTH(OrderDate) as OrderMonth,
+                    Sum(Sales) as CurrentMonthSales,
+                    lag(SUM(Sales)) OVER(ORDER BY MONTH(OrderDate)) PreviousMonthSales
+                FROM orders
+                GROUP BY month(OrderDate)
+            )t;
 
 
 
@@ -123,11 +123,11 @@
 - TASK: 
   find the difference in sales between the current and the lowest sales
 
-    SELECT 
-        OrderID, 
-        ProductID, 
-        Sales,
-        FIRST_VALUE(Sales) over(PARTITION BY ProductID ORDER BY Sales) lowest_sales,
-        LAST_VALUE(Sales) over(PARTITION BY ProductID ORDER BY Sales ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) highest_sales,
-        Sales - FIRST_VALUE(Sales) over(PARTITION BY ProductID ORDER BY Sales) SalesDifference
-    FROM orders;
+        SELECT 
+            OrderID, 
+            ProductID, 
+            Sales,
+            FIRST_VALUE(Sales) over(PARTITION BY ProductID ORDER BY Sales) lowest_sales,
+            LAST_VALUE(Sales) over(PARTITION BY ProductID ORDER BY Sales ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) highest_sales,
+            Sales - FIRST_VALUE(Sales) over(PARTITION BY ProductID ORDER BY Sales) SalesDifference
+        FROM orders;
